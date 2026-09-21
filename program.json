@@ -1,0 +1,47 @@
+{
+  "seq": {
+    "left": {
+      "seq": {
+        "left": {
+          "assn": {
+            "dst": "x",
+            "src": {
+              "const": 10
+            }
+          }
+        },
+        "right": {
+          "assn": {
+            "dst": "y",
+            "src": {
+              "const": 20
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "seq": {
+        "left": {
+          "assn": {
+            "dst": "sum",
+            "src": {
+              "binop": "+",
+              "left": {
+                "var": "x"
+              },
+              "right": {
+                "var": "y"
+              }
+            }
+          }
+        },
+        "right": {
+          "write": {
+            "var": "sum"
+          }
+        }
+      }
+    }
+  }
+}
