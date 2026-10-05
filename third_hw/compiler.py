@@ -15,7 +15,7 @@ class Compiler:
         self.instructions.append(instruction)
 
     def new_label(self, prefix="L"):
-        label = f"{prefix}{self.label_counter}"
+        label = f"L_{prefix}_{self.label_counter}"
         self.label_counter += 1
         return label
 
@@ -59,7 +59,7 @@ class Compiler:
             f"Unknown expression: {expr!r}"
         )
 
-    def compile_stmt(self, node):
+    def compile_stmt(self, node, next_label):
 
         if node == "skip":
             return
@@ -72,12 +72,34 @@ class Compiler:
         if "seq" in node:
             seq = node["seq"]
 
-            self.compile_stmt(seq["left"])
-            self.compile_stmt(seq["right"])
+            if not isinstance(seq, dict):
+                raise CompilerError(
+                    "seq must contain an object"
+                )
+
+            if "left" not in seq or "right" not in seq:
+                raise CompilerError(
+                    "seq must contain 'left' and 'right'"
+                )
+
+            seq_label = self.new_label("seq")
+
+            self.compile_stmt(seq["left"], seq_label)
+
+            self.emit({
+                "LABEL": seq_label
+            })
+
+            self.compile_stmt(seq["right"], next_label)
             return
 
         if "assn" in node:
             assn = node["assn"]
+
+            if not isinstance(assn, dict):
+                raise CompilerError(
+                    "assn must contain an object"
+                )
 
             if "dst" not in assn or "src" not in assn:
                 raise CompilerError(
@@ -110,6 +132,11 @@ class Compiler:
         if "if" in node:
             statement = node["if"]
 
+            if not isinstance(statement, dict):
+                raise CompilerError(
+                    "if must contain an object"
+                )
+
             if "cond" not in statement:
                 raise CompilerError(
                     "if must contain 'cond'"
@@ -121,7 +148,6 @@ class Compiler:
                 )
 
             else_label = self.new_label("else")
-            end_label = self.new_label("end")
 
             self.compile_expr(statement["cond"])
 
@@ -129,10 +155,10 @@ class Compiler:
                 "JZ": else_label
             })
 
-            self.compile_stmt(statement["then"])
+            self.compile_stmt(statement["then"], next_label)
 
             self.emit({
-                "JMP": end_label
+                "JMP": next_label
             })
 
             self.emit({
@@ -140,16 +166,17 @@ class Compiler:
             })
 
             if "else" in statement:
-                self.compile_stmt(statement["else"])
-
-            self.emit({
-                "LABEL": end_label
-            })
+                self.compile_stmt(statement["else"], next_label)
 
             return
 
         if "while" in node:
             statement = node["while"]
+
+            if not isinstance(statement, dict):
+                raise CompilerError(
+                    "while must contain an object"
+                )
 
             if "cond" not in statement:
                 raise CompilerError(
@@ -161,51 +188,22 @@ class Compiler:
                     "while must contain 'body'"
                 )
 
-            start_label = self.new_label("while")
-            end_label = self.new_label("end")
+            start_label = self.new_label("while_body")
+            cond_label = self.new_label("while_cond")
+
+            self.emit({
+                "JMP": cond_label
+            })
 
             self.emit({
                 "LABEL": start_label
             })
 
-            self.compile_expr(statement["cond"])
+            self.compile_stmt(statement["body"], cond_label)
 
             self.emit({
-                "JZ": end_label
+                "LABEL": cond_label
             })
-
-            self.compile_stmt(statement["body"])
-
-            self.emit({
-                "JMP": start_label
-            })
-
-            self.emit({
-                "LABEL": end_label
-            })
-
-            return
-
-        if "do" in node:
-            statement = node["do"]
-
-            if "body" not in statement:
-                raise CompilerError(
-                    "do must contain 'body'"
-                )
-
-            if "cond" not in statement:
-                raise CompilerError(
-                    "do must contain 'cond'"
-                )
-
-            start_label = self.new_label("do")
-
-            self.emit({
-                "LABEL": start_label
-            })
-
-            self.compile_stmt(statement["body"])
 
             self.compile_expr(statement["cond"])
 
@@ -215,58 +213,41 @@ class Compiler:
 
             return
 
-        if "for" in node:
-            statement = node["for"]
+        if "do" in node:
+            statement = node["do"]
 
-            init = statement.get("init")
-            cond = statement.get("cond")
-            update = statement.get("step")
-
-            if update is None:
-                update = statement.get("update")
-
-            if update is None:
-                update = statement.get("post")
-
-            body = statement.get("body")
-
-            if cond is None:
+            if not isinstance(statement, dict):
                 raise CompilerError(
-                    "for must contain 'cond'"
+                    "do must contain an object"
                 )
 
-            if body is None:
+            if "cond" not in statement:
                 raise CompilerError(
-                    "for must contain 'body'"
+                    "do must contain 'cond'"
                 )
 
-            start_label = self.new_label("for")
-            end_label = self.new_label("end")
+            if "body" not in statement:
+                raise CompilerError(
+                    "do must contain 'body'"
+                )
 
-            if init is not None:
-                self.compile_stmt(init)
+            start_label = self.new_label("while_body")
+            cond_label = self.new_label("while_cond")
 
             self.emit({
                 "LABEL": start_label
             })
 
-            self.compile_expr(cond)
+            self.compile_stmt(statement["body"], cond_label)
 
             self.emit({
-                "JZ": end_label
+                "LABEL": cond_label
             })
 
-            self.compile_stmt(body)
-
-            if update is not None:
-                self.compile_stmt(update)
+            self.compile_expr(statement["cond"])
 
             self.emit({
-                "JMP": start_label
-            })
-
-            self.emit({
-                "LABEL": end_label
+                "JNZ": start_label
             })
 
             return
@@ -280,7 +261,37 @@ class Compiler:
         self.instructions = []
         self.label_counter = 0
 
-        self.compile_stmt(ast)
+        end_label = self.new_label("end")
+        self.compile_stmt(ast, end_label)
+
+        self.emit({
+            "LABEL": end_label
+        })
+
+        used_labels = []
+
+        for instruction in self.instructions:
+            if isinstance(instruction, dict):
+                if "JMP" in instruction:
+                    used_labels.append(instruction["JMP"])
+                if "JZ" in instruction:
+                    used_labels.append(instruction["JZ"])
+                if "JNZ" in instruction:
+                    used_labels.append(instruction["JNZ"])
+
+        instructions = []
+
+        for instruction in self.instructions:
+            if isinstance(instruction, dict) and "LABEL" in instruction:
+                label = instruction["LABEL"]
+
+                if label.startswith("L_seq_") or label.startswith("L_end_"):
+                    if label not in used_labels:
+                        continue
+
+            instructions.append(instruction)
+
+        self.instructions = instructions
 
         return self.instructions
 
@@ -288,7 +299,7 @@ class Compiler:
 def main():
     if len(sys.argv) < 2:
         print(
-            "Usage: python compiler.py <input.json> [output.json]",
+            "Usage: python compiler2.py <input.json> [output.json]",
             file=sys.stderr
         )
         sys.exit(1)
