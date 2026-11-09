@@ -1,0 +1,895 @@
+{
+  "seq": {
+    "left": { "read": "expr" },
+    "right": {
+      "seq": {
+        "left": { "read": "state" },
+        "right": {
+          "seq": {
+            "left": {
+              "assn": {
+                "dst": "todo",
+                "src": {
+                  "array": [
+                    { "const": 1 },
+                    { "array": [ { "const": 0 }, { "var": "expr" } ] },
+                    { "array": [ { "const": 0 } ] }
+                  ]
+                }
+              }
+            },
+            "right": {
+              "seq": {
+                "left": {
+                  "assn": {
+                    "dst": "values",
+                    "src": { "array": [ { "const": 0 } ] }
+                  }
+                },
+                "right": {
+                  "seq": {
+                    "left": {
+                      "assn": { "dst": "ok", "src": { "const": 1 } }
+                    },
+                    "right": {
+                      "seq": {
+                        "left": {
+                          "while": {
+                            "cond": {
+                              "binop": "&&",
+                              "left": {
+                                "binop": "!=",
+                                "left": {
+                                  "elem": { "var": "todo" },
+                                  "index": { "const": 0 }
+                                },
+                                "right": { "const": 0 }
+                              },
+                              "right": {
+                                "binop": "!=",
+                                "left": { "var": "ok" },
+                                "right": { "const": 0 }
+                              }
+                            },
+                            "body": {
+                              "seq": {
+                                "left": {
+                                  "assn": {
+                                    "dst": "job",
+                                    "src": {
+                                      "elem": { "var": "todo" },
+                                      "index": { "const": 1 }
+                                    }
+                                  }
+                                },
+                                "right": {
+                                  "seq": {
+                                    "left": {
+                                      "assn": {
+                                        "dst": "todo",
+                                        "src": {
+                                          "elem": { "var": "todo" },
+                                          "index": { "const": 2 }
+                                        }
+                                      }
+                                    },
+                                    "right": {
+                                      "if": {
+                                        "cond": {
+                                          "binop": "==",
+                                          "left": {
+                                            "elem": { "var": "job" },
+                                            "index": { "const": 0 }
+                                          },
+                                          "right": { "const": 0 }
+                                        },
+                                        "then": {
+                                          "switch": {
+                                            "scrutinee": {
+                                              "elem": { "var": "job" },
+                                              "index": { "const": 1 }
+                                            },
+                                            "branches": [
+                                              {
+                                                "pattern": {
+                                                  "array": [
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "tag"
+                                                      }
+                                                    },
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "x"
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "branch": {
+                                                  "if": {
+                                                    "cond": {
+                                                      "binop": "==",
+                                                      "left": {
+                                                        "var": "tag"
+                                                      },
+                                                      "right": { "const": 0 }
+                                                    },
+                                                    "then": {
+                                                      "assn": {
+                                                        "dst": "values",
+                                                        "src": {
+                                                          "array": [
+                                                            { "const": 1 },
+                                                            { "var": "x" },
+                                                            {
+                                                              "var": "values"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    },
+                                                    "else": {
+                                                      "if": {
+                                                        "cond": {
+                                                          "binop": "==",
+                                                          "left": {
+                                                            "var": "tag"
+                                                          },
+                                                          "right": {
+                                                            "const": 1
+                                                          }
+                                                        },
+                                                        "then": {
+                                                          "seq": {
+                                                            "left": {
+                                                              "assn": {
+                                                                "dst": "p",
+                                                                "src": {
+                                                                  "var": "state"
+                                                                }
+                                                              }
+                                                            },
+                                                            "right": {
+                                                              "seq": {
+                                                                "left": {
+                                                                  "assn": {
+                                                                    "dst": "found",
+                                                                    "src": {
+                                                                    "const": 0
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "right": {
+                                                                  "seq": {
+                                                                    "left": {
+                                                                    "while": {
+                                                                    "cond": {
+                                                                    "binop": "&&",
+                                                                    "left": {
+                                                                    "binop": "!=",
+                                                                    "left": {
+                                                                    "elem": {
+                                                                    "var": "p"
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 0
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "const": 0
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "binop": "==",
+                                                                    "left": {
+                                                                    "var": "found"
+                                                                    },
+                                                                    "right": {
+                                                                    "const": 0
+                                                                    }
+                                                                    }
+                                                                    },
+                                                                    "body": {
+                                                                    "if": {
+                                                                    "cond": {
+                                                                    "binop": "==",
+                                                                    "left": {
+                                                                    "elem": {
+                                                                    "elem": {
+                                                                    "var": "p"
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 1
+                                                                    }
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 0
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "x"
+                                                                    }
+                                                                    },
+                                                                    "then": {
+                                                                    "seq": {
+                                                                    "left": {
+                                                                    "assn": {
+                                                                    "dst": "values",
+                                                                    "src": {
+                                                                    "array": [
+                                                                    {
+                                                                    "const": 1
+                                                                    },
+                                                                    {
+                                                                    "elem": {
+                                                                    "elem": {
+                                                                    "var": "p"
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 1
+                                                                    }
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 1
+                                                                    }
+                                                                    },
+                                                                    {
+                                                                    "var": "values"
+                                                                    }
+                                                                    ]
+                                                                    }
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "assn": {
+                                                                    "dst": "found",
+                                                                    "src": {
+                                                                    "const": 1
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    },
+                                                                    "else": {
+                                                                    "assn": {
+                                                                    "dst": "p",
+                                                                    "src": {
+                                                                    "elem": {
+                                                                    "var": "p"
+                                                                    },
+                                                                    "index": {
+                                                                    "const": 2
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "if": {
+                                                                    "cond": {
+                                                                    "binop": "==",
+                                                                    "left": {
+                                                                    "var": "found"
+                                                                    },
+                                                                    "right": {
+                                                                    "const": 0
+                                                                    }
+                                                                    },
+                                                                    "then": {
+                                                                    "seq": {
+                                                                    "left": {
+                                                                    "write": {
+                                                                    "string": "Undefined variable"
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "assn": {
+                                                                    "dst": "ok",
+                                                                    "src": {
+                                                                    "const": 0
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    },
+                                                                    "else": "skip"
+                                                                    }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "else": {
+                                                          "seq": {
+                                                            "left": {
+                                                              "write": {
+                                                                "string": "Invalid expression tag"
+                                                              }
+                                                            },
+                                                            "right": {
+                                                              "assn": {
+                                                                "dst": "ok",
+                                                                "src": {
+                                                                  "const": 0
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "pattern": {
+                                                  "array": [
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "tag"
+                                                      }
+                                                    },
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "op"
+                                                      }
+                                                    },
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "left_expr"
+                                                      }
+                                                    },
+                                                    {
+                                                      "bind": {
+                                                        "pattern": {
+                                                          "wildcard": []
+                                                        },
+                                                        "name": "right_expr"
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "branch": {
+                                                  "if": {
+                                                    "cond": {
+                                                      "binop": "==",
+                                                      "left": {
+                                                        "var": "tag"
+                                                      },
+                                                      "right": { "const": 2 }
+                                                    },
+                                                    "then": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "todo",
+                                                            "src": {
+                                                              "array": [
+                                                                {
+                                                                  "const": 1
+                                                                },
+                                                                {
+                                                                  "array": [
+                                                                    {
+                                                                    "const": 1
+                                                                    },
+                                                                    {
+                                                                    "var": "op"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                {
+                                                                  "var": "todo"
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "seq": {
+                                                            "left": {
+                                                              "assn": {
+                                                                "dst": "todo",
+                                                                "src": {
+                                                                  "array": [
+                                                                    {
+                                                                    "const": 1
+                                                                    },
+                                                                    {
+                                                                    "array": [
+                                                                    {
+                                                                    "const": 0
+                                                                    },
+                                                                    {
+                                                                    "var": "right_expr"
+                                                                    }
+                                                                    ]
+                                                                    },
+                                                                    {
+                                                                    "var": "todo"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            },
+                                                            "right": {
+                                                              "assn": {
+                                                                "dst": "todo",
+                                                                "src": {
+                                                                  "array": [
+                                                                    {
+                                                                    "const": 1
+                                                                    },
+                                                                    {
+                                                                    "array": [
+                                                                    {
+                                                                    "const": 0
+                                                                    },
+                                                                    {
+                                                                    "var": "left_expr"
+                                                                    }
+                                                                    ]
+                                                                    },
+                                                                    {
+                                                                    "var": "todo"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    "else": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "write": {
+                                                            "string": "Invalid expression tag"
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "assn": {
+                                                            "dst": "ok",
+                                                            "src": {
+                                                              "const": 0
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "pattern": { "wildcard": [] },
+                                                "branch": {
+                                                  "seq": {
+                                                    "left": {
+                                                      "write": {
+                                                        "string": "Invalid expression"
+                                                      }
+                                                    },
+                                                    "right": {
+                                                      "assn": {
+                                                        "dst": "ok",
+                                                        "src": { "const": 0 }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "else": {
+                                          "seq": {
+                                            "left": {
+                                              "assn": {
+                                                "dst": "right",
+                                                "src": {
+                                                  "elem": { "var": "values" },
+                                                  "index": { "const": 1 }
+                                                }
+                                              }
+                                            },
+                                            "right": {
+                                              "seq": {
+                                                "left": {
+                                                  "assn": {
+                                                    "dst": "values",
+                                                    "src": {
+                                                      "elem": {
+                                                        "var": "values"
+                                                      },
+                                                      "index": { "const": 2 }
+                                                    }
+                                                  }
+                                                },
+                                                "right": {
+                                                  "seq": {
+                                                    "left": {
+                                                      "assn": {
+                                                        "dst": "left",
+                                                        "src": {
+                                                          "elem": {
+                                                            "var": "values"
+                                                          },
+                                                          "index": {
+                                                            "const": 1
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    "right": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "values",
+                                                            "src": {
+                                                              "elem": {
+                                                                "var": "values"
+                                                              },
+                                                              "index": {
+                                                                "const": 2
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "seq": {
+                                                            "left": {
+                                                              "switch": {
+                                                                "scrutinee": {
+                                                                  "elem": {
+                                                                    "var": "job"
+                                                                  },
+                                                                  "index": {
+                                                                    "const": 1
+                                                                  }
+                                                                },
+                                                                "branches": [
+                                                                  {
+                                                                    "pattern": "+",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "+",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "-",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "-",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "*",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "*",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "/",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "/",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "%",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "%",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "==",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "==",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "!=",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "!=",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "<",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "<",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "<=",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "<=",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": ">",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": ">",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": ">=",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": ">=",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "&&",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "&&",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": "!!",
+                                                                    "branch": {
+                                                                    "assn": {
+                                                                    "dst": "result",
+                                                                    "src": {
+                                                                    "binop": "!!",
+                                                                    "left": {
+                                                                    "var": "left"
+                                                                    },
+                                                                    "right": {
+                                                                    "var": "right"
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "pattern": {
+                                                                    "wildcard": []
+                                                                    },
+                                                                    "branch": {
+                                                                    "seq": {
+                                                                    "left": {
+                                                                    "write": {
+                                                                    "string": "Unknown operator"
+                                                                    }
+                                                                    },
+                                                                    "right": {
+                                                                    "assn": {
+                                                                    "dst": "ok",
+                                                                    "src": {
+                                                                    "const": 0
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "right": {
+                                                              "if": {
+                                                                "cond": {
+                                                                  "binop": "!=",
+                                                                  "left": {
+                                                                    "var": "ok"
+                                                                  },
+                                                                  "right": {
+                                                                    "const": 0
+                                                                  }
+                                                                },
+                                                                "then": {
+                                                                  "assn": {
+                                                                    "dst": "values",
+                                                                    "src": {
+                                                                    "array": [
+                                                                    {
+                                                                    "const": 1
+                                                                    },
+                                                                    {
+                                                                    "var": "result"
+                                                                    },
+                                                                    {
+                                                                    "var": "values"
+                                                                    }
+                                                                    ]
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "else": "skip"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "right": {
+                          "if": {
+                            "cond": {
+                              "binop": "!=",
+                              "left": { "var": "ok" },
+                              "right": { "const": 0 }
+                            },
+                            "then": {
+                              "write": {
+                                "elem": { "var": "values" },
+                                "index": { "const": 1 }
+                              }
+                            },
+                            "else": "skip"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

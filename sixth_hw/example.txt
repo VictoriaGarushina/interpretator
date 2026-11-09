@@ -1,0 +1,84 @@
+{
+    read(expr);
+    read(state);
+    todo = [1, [0, expr], [0]];
+    values = [0];
+    ok = 1;
+
+    while (todo[0] != 0 && ok != 0) {
+        job = todo[1];
+        todo = todo[2];
+
+        if (job[0] == 0) {
+            switch (job[1]) {
+                case [tag, x] ->
+                    if (tag == 0) {
+                        values = [1, x, values];
+                    } else {
+                        if (tag == 1) {
+                            p = state;
+                            found = 0;
+                            while (p[0] != 0 && found == 0) {
+                                if (p[1][0] == x) {
+                                    values = [1, p[1][1], values];
+                                    found = 1;
+                                } else {
+                                    p = p[2];
+                                }
+                            }
+                            if (found == 0) {
+                                write("Undefined variable");
+                                ok = 0;
+                            }
+                        } else {
+                            write("Invalid expression tag");
+                            ok = 0;
+                        }
+                    }
+                | case [tag, op, left_expr, right_expr] ->
+                    if (tag == 2) {
+                        todo = [1, [1, op], todo];
+                        todo = [1, [0, right_expr], todo];
+                        todo = [1, [0, left_expr], todo];
+                    } else {
+                        write("Invalid expression tag");
+                        ok = 0;
+                    }
+                | case _ ->
+                    write("Invalid expression");
+                    ok = 0;
+            }
+        } else {
+            right = values[1];
+            values = values[2];
+            left = values[1];
+            values = values[2];
+
+            switch (job[1]) {
+                case "+" -> result = left + right;
+                | case "-" -> result = left - right;
+                | case "*" -> result = left * right;
+                | case "/" -> result = left / right;
+                | case "%" -> result = left % right;
+                | case "==" -> result = left == right;
+                | case "!=" -> result = left != right;
+                | case "<" -> result = left < right;
+                | case "<=" -> result = left <= right;
+                | case ">" -> result = left > right;
+                | case ">=" -> result = left >= right;
+                | case "&&" -> result = left && right;
+                | case "!!" -> result = left !! right;
+                | case _ ->
+                    write("Unknown operator");
+                    ok = 0;
+            }
+            if (ok != 0) {
+                values = [1, result, values];
+            }
+        }
+    }
+
+    if (ok != 0) {
+        write(values[1]);
+    }
+}
