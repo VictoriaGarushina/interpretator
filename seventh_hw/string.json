@@ -1,0 +1,444 @@
+{
+  "seq": {
+    "left": {
+      "read": "smth"
+    },
+    "right": {
+      "seq": {
+        "left": {
+          "assn": {
+            "dst": "buf",
+            "src": {
+              "string": "["
+            }
+          }
+        },
+        "right": {
+          "seq": {
+            "left": {
+              "assn": {
+                "dst": "stack",
+                "src": {
+                  "binop": ":",
+                  "left": {
+                    "array": [
+                      {
+                        "array": [
+                          {
+                            "var": "smth"
+                          }
+                        ]
+                      },
+                      {
+                        "const": 0
+                      }
+                    ]
+                  },
+                  "right": {
+                    "sexp": "nil",
+                    "args": []
+                  }
+                }
+              }
+            },
+            "right": {
+              "seq": {
+                "left": {
+                  "while": {
+                    "cond": {
+                      "binop": "!=",
+                      "left": {
+                        "var": "stack"
+                      },
+                      "right": {
+                        "sexp": "nil",
+                        "args": []
+                      }
+                    },
+                    "body": {
+                      "switch": {
+                        "scrutinee": {
+                          "var": "stack"
+                        },
+                        "branches": [
+                          {
+                            "pattern": {
+                              "binop": ":",
+                              "left": {
+                                "array": [
+                                  {
+                                    "var": "vector"
+                                  },
+                                  {
+                                    "var": "pos"
+                                  }
+                                ]
+                              },
+                              "right": {
+                                "var": "tl"
+                              }
+                            },
+                            "branch": {
+                              "if": {
+                                "cond": {
+                                  "binop": ">=",
+                                  "left": {
+                                    "var": "pos"
+                                  },
+                                  "right": {
+                                    "length": {
+                                      "var": "vector"
+                                    }
+                                  }
+                                },
+                                "then": {
+                                  "seq": {
+                                    "left": {
+                                      "assn": {
+                                        "dst": "buf",
+                                        "src": {
+                                          "binop": "+",
+                                          "left": {
+                                            "var": "buf"
+                                          },
+                                          "right": {
+                                            "string": "]"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "right": {
+                                      "assn": {
+                                        "dst": "stack",
+                                        "src": {
+                                          "var": "tl"
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "else": {
+                                  "seq": {
+                                    "left": {
+                                      "if": {
+                                        "cond": {
+                                          "binop": "&&",
+                                          "left": {
+                                            "binop": "<",
+                                            "left": {
+                                              "var": "pos"
+                                            },
+                                            "right": {
+                                              "length": {
+                                                "var": "vector"
+                                              }
+                                            }
+                                          },
+                                          "right": {
+                                            "binop": ">",
+                                            "left": {
+                                              "var": "pos"
+                                            },
+                                            "right": {
+                                              "const": 0
+                                            }
+                                          }
+                                        },
+                                        "then": {
+                                          "assn": {
+                                            "dst": "buf",
+                                            "src": {
+                                              "binop": "+",
+                                              "left": {
+                                                "var": "buf"
+                                              },
+                                              "right": {
+                                                "string": ", "
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "else": "skip"
+                                      }
+                                    },
+                                    "right": {
+                                      "seq": {
+                                        "left": {
+                                          "assn": {
+                                            "dst": "current",
+                                            "src": {
+                                              "elem": {
+                                                "var": "vector"
+                                              },
+                                              "index": {
+                                                "var": "pos"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "right": {
+                                          "seq": {
+                                            "left": {
+                                              "assn": {
+                                                "dst": "pos",
+                                                "src": {
+                                                  "binop": "+",
+                                                  "left": {
+                                                    "var": "pos"
+                                                  },
+                                                  "right": {
+                                                    "const": 1
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "right": {
+                                              "switch": {
+                                                "scrutinee": {
+                                                  "var": "current"
+                                                },
+                                                "branches": [
+                                                  {
+                                                    "pattern": {
+                                                      "bind": {
+                                                        "name": "x",
+                                                        "pattern": "#int"
+                                                      }
+                                                    },
+                                                    "branch": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "buf",
+                                                            "src": {
+                                                              "binop": "+",
+                                                              "left": {
+                                                                "var": "buf"
+                                                              },
+                                                              "right": {
+                                                                "var": "x"
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "assn": {
+                                                            "dst": "stack",
+                                                            "src": {
+                                                              "binop": ":",
+                                                              "left": {
+                                                                "array": [
+                                                                  {
+                                                                    "var": "vector"
+                                                                  },
+                                                                  {
+                                                                    "var": "pos"
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "right": {
+                                                                "var": "tl"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "pattern": {
+                                                      "bind": {
+                                                        "name": "s",
+                                                        "pattern": "#string"
+                                                      }
+                                                    },
+                                                    "branch": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "buf",
+                                                            "src": {
+                                                              "binop": "+",
+                                                              "left": {
+                                                                "var": "buf"
+                                                              },
+                                                              "right": {
+                                                                "var": "s"
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "assn": {
+                                                            "dst": "stack",
+                                                            "src": {
+                                                              "binop": ":",
+                                                              "left": {
+                                                                "array": [
+                                                                  {
+                                                                    "var": "vector"
+                                                                  },
+                                                                  {
+                                                                    "var": "pos"
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "right": {
+                                                                "var": "tl"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "pattern": {
+                                                      "bind": {
+                                                        "name": "a",
+                                                        "pattern": "#array"
+                                                      }
+                                                    },
+                                                    "branch": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "buf",
+                                                            "src": {
+                                                              "binop": "+",
+                                                              "left": {
+                                                                "var": "buf"
+                                                              },
+                                                              "right": {
+                                                                "string": "array ["
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "assn": {
+                                                            "dst": "stack",
+                                                            "src": {
+                                                              "binop": ":",
+                                                              "left": {
+                                                                "array": [
+                                                                  {
+                                                                    "var": "a"
+                                                                  },
+                                                                  {
+                                                                    "const": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "right": {
+                                                                "binop": ":",
+                                                                "left": {
+                                                                  "array": [
+                                                                    {
+                                                                      "var": "vector"
+                                                                    },
+                                                                    {
+                                                                      "var": "pos"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "right": {
+                                                                  "var": "tl"
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "pattern": {
+                                                      "bind": {
+                                                        "name": "s",
+                                                        "pattern": "#sexp"
+                                                      }
+                                                    },
+                                                    "branch": {
+                                                      "seq": {
+                                                        "left": {
+                                                          "assn": {
+                                                            "dst": "buf",
+                                                            "src": {
+                                                              "binop": "+",
+                                                              "left": {
+                                                                "var": "buf"
+                                                              },
+                                                              "right": {
+                                                                "string": "sexp ["
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        "right": {
+                                                          "assn": {
+                                                            "dst": "stack",
+                                                            "src": {
+                                                              "binop": ":",
+                                                              "left": {
+                                                                "array": [
+                                                                  {
+                                                                    "var": "s"
+                                                                  },
+                                                                  {
+                                                                    "const": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              "right": {
+                                                                "binop": ":",
+                                                                "left": {
+                                                                  "array": [
+                                                                    {
+                                                                      "var": "vector"
+                                                                    },
+                                                                    {
+                                                                      "var": "pos"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "right": {
+                                                                  "var": "tl"
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "write": {
+                    "var": "buf"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

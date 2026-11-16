@@ -1,0 +1,62 @@
+{
+  "seq": {
+    "left": { "read": "list" },
+    "right": {
+      "seq": {
+        "left": { "assn": { "dst": "cont", "src": { "const": 1 } } },
+        "right": {
+          "seq": {
+            "left": { "assn": { "dst": "rev", "src": { "sexp": "nil", "args": [] } } },
+            "right": {
+              "seq": {
+                "left": {
+                  "while": {
+                    "cond": {
+                      "binop": "!=",
+                      "left": { "var": "list" },
+                      "right": { "sexp": "nil", "args": [] }
+                    },
+                    "body": {
+                      "switch": {
+                        "scrutinee": { "var": "list" },
+                        "branches": [
+                          {
+                            "pattern": {
+                              "sexp": "cons",
+                              "args": [ { "var": "h" }, { "var": "tl" } ]
+                            },
+                            "branch": {
+                              "seq": {
+                                "left": {
+                                  "assn": {
+                                    "dst": "rev",
+                                    "src": {
+                                      "binop": ":",
+                                      "left": { "var": "h" },
+                                      "right": { "var": "rev" }
+                                    }
+                                  }
+                                },
+                                "right": {
+                                  "assn": {
+                                    "dst": "list",
+                                    "src": { "var": "tl" }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "right": { "write": { "var": "rev" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
